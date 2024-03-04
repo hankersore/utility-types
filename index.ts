@@ -135,3 +135,145 @@ type ExtractType = Extract<Animal, "cat" | "dog">;
 type C = null | string | number | undefined;
 
 type NonNull = NonNullable<C>;
+
+// ***************************************
+
+// Parameters<Type>
+
+// Parameters Type is used take the parameters or arguments of a function and create a new type based off them.
+// tuple with function arguments
+
+const myFunction = (a: string, b: string) => {
+    return a + b;
+}
+
+type myType = Parameters<typeof myFunction>; 
+// Equivalent to a tuple type of:
+// type myType = [ a: string, b: string ];
+
+let myArray:myType = [ 'hello ', 'world' ];
+
+myFunction(...myArray);
+
+// ***************************************
+
+// ConstructorParameters<Type>
+
+// ConstructorParameters<Type> is a TypeScript utility type that extracts the parameter types from the constructor of a class or a constructor function.
+// In simpler terms, it helps you figure out the types of parameters that a constructor function takes. 
+
+class Student {
+    constructor(name: string, age: number) {
+       
+    }
+}
+
+const params: ConstructorParameters<typeof Student> = ['John', 30];
+const student = new Student(...params);
+// Equivalent to: const person = new Person('John', 30);
+
+// ***************************************
+
+// ReturnType<Type>
+
+// Constructs a type consisting of the return type of function Type.
+
+// The ReturnType utility type is very useful in situations where the output of a specific function needs to be taken in by another function. In that scenario, you might create a new, custom type, that the output of a function constrains itself to.
+
+function sendData(a: number, b: number) {
+    return {
+        a: `${a}`,
+        b: `${b}`
+    }
+}
+type Data = ReturnType<typeof sendData>;
+// The same as writing:
+// type Data = {
+//     a: string,
+//     b: string
+// }
+
+// ***************************************
+
+// InstanceType<Type>
+
+// Constructs a type consisting of the instance type of a constructor function in Type.
+
+class Person { 
+	constructor(public name: string, public age: number) { } 
+} 
+
+type PersonInstance = InstanceType<typeof Person>; 
+
+const person: PersonInstance = new Person("Alice", 30); 
+
+console.log(person.name); // "Alice" 
+console.log(person.age); // 30
+
+// ***************************************
+
+// ThisParameterType<Type>
+
+// Extracts the type of the 'this' parameter for a function type, or 'unknown' if the function type has no 'this' parameter.
+
+function logName(this: { name: string }): void {
+    console.log(this.name);
+}
+
+type ThisTypeOfLogName = ThisParameterType<typeof logName>;
+
+// ***************************************
+
+// OmitThisParameter<Type>
+
+// Removes the 'this' parameter from Type. If Type has no explicitly declared 'this' parameter, the result is simply Type. Otherwise, a new function type with no 'this' parameter is created from Type. Generics are erased and only the last overload signature is propagated into the new function type.
+
+function toHex(this: Number) {
+    return this.toString(16);
+}
+   
+const fiveToHex: OmitThisParameter<typeof toHex> = toHex.bind(5);
+   
+console.log(fiveToHex());
+
+// ***************************************
+
+// ThisType<Type>
+
+// This utility does not return a transformed type. Instead, it serves as a marker for a contextual 'this' type. Note that the noImplicitThis flag must be enabled to use this utility.
+
+// If you add & ThisType<WhateverYouWantThisToBe> to the type of an object, the functions within that object will have WhateverYouWantThisToBe as the type used for 'this'.
+
+// ***************************************
+
+// Intrinsic String Manipulation Types
+
+// Uppercase<StringType>
+
+// Converts each character in the string to the uppercase version.
+
+type Greeting = "Hello, world";
+
+type ShoutyGreeting = Uppercase<Greeting>;
+
+// Lowercase<StringType>
+
+// Converts each character in the string to the lowercase equivalent.
+
+type QuietGreeting = Lowercase<Greeting>;
+
+// Capitalize<StringType>
+
+// Converts the first character in the string to an uppercase equivalent.
+
+type LowercaseGreeting = "hello, world";
+
+type CapGreeting = Capitalize<LowercaseGreeting>;
+
+// Uncapitalize<StringType>
+
+// Converts the first character in the string to a lowercase equivalent.
+
+type UppercaseGreeting = "HELLO WORLD";
+
+type UncomfortableGreeting = Uncapitalize<UppercaseGreeting>;

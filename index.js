@@ -25,4 +25,21 @@ function main() {
         console.log(result);
     });
 }
-main();
+main(); // Data fetched successfully
+const a = {
+    name: 'Dilshoda'
+};
+const courses = {
+    "Computer Science": {
+        professor: "Mary Jane",
+        tel: 12,
+    },
+    "Mathematics": {
+        professor: "John Doe",
+        tel: 12,
+    },
+    "Literature": {
+        professor: "Frank Purple",
+        tel: 12,
+    }
+};
